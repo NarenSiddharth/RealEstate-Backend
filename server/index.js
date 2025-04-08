@@ -14,10 +14,23 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json())
+app.use((req, res, next) => {
+    console.log(`[${req.method}] ${req.url}`);
+    next();
+});
+
 app.use(cookieParser())
 
 app.use(cors({
-    origin: ['http://localhost:5173']
+    origin: [
+        'http://localhost:5173',
+        'capacitor://localhost',
+        'http://localhost',
+        'ionic://localhost',
+        'https://realestate-backend-production-e96a.up.railway.app', // if your frontend calls backend directly
+        'https://your-frontend.vercel.app' // <-- put your deployed frontend URL here
+    ],
+    credentials: true
 }));
 
 app.listen(PORT, async()=> {
